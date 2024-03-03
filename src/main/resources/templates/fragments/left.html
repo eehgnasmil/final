@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<div class="myLeft Left_menu" th:fragment="myLeft" >
-    <link rel="stylesheet" type="text/css" href="/layout/css/left.css" >
+<div class="myLeft Left_menu" th:fragment="myLeft">
+    <link rel="stylesheet" type="text/css" href="/layout/css/left.css">
     <ul class="menu_wrap green" style="margin-top:130px!important;">
         <div class="profileWrap">
             <div class="pImg">
                 <img th:src="${member.FileDto.path}" alt="프로필 사진">
             </div>
             <ul class="profile">
-                <li th:text="${member.nick}" style="display: block; text-align: center; font-weight: 600; padding:10px 0"></li>
+                <li th:text="${member.nick}"
+                    style="display: block; text-align: center; font-weight: 600; padding:10px 0"></li>
                 <li style="font-weight: 800; letter-spacing: -1.5px;">내 포인트 : </li>
                 <li style="font-weight: 800; letter-spacing: 0px;" th:text="${member.point}+'P'">포인트</li>
             </ul>
@@ -70,9 +71,13 @@
             </div>
         </li>
         <li class="board main_menu">게시판 관리
-
-        </li>
-    </ul>
+        <div class="admin_sub">
+            <ul class="sub_menu">
+                <li><a href="/admin/boardNotice">공지(작성 및 수정,삭제)</a></li>
+                <li><a href="/admin/reportBoard">신고된 게시글</a></li>
+                <li><a href="/admin/reportBoardReply">신고된 댓글</a></li>
+            </ul>
+        </div>
 </div>
 
 <div class="mainLeft Left_menu" th:fragment="mainLeft">
@@ -111,4 +116,5 @@
     <!--script-->
     <!--script-->
 </div>
+
 </html>

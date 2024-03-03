@@ -1,6 +1,5 @@
 package ggs.ggs.admin;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
@@ -37,26 +36,26 @@ public class AdminController {
     @Qualifier("goodsServiceImpl")
     private final GoodsService goodsService;
     private String id = null;
-    
+
     @Autowired
     @Qualifier("goodsCSServiceImpl")
     private final GoodsCSService goodsCSService;
-    
-    //관리자
+
+    // 관리자
     @GetMapping("/{title}")
     public String myModify(@PathVariable("title") String title, Model model, Authentication authentication,
-    		@RequestParam(value = "category", defaultValue = "0") Integer category
-            , @RequestParam(value = "sortValue", defaultValue = "0") Integer sortValue
-            , @RequestParam(value = "page", defaultValue = "0") int page) {
+            @RequestParam(value = "category", defaultValue = "0") Integer category,
+            @RequestParam(value = "sortValue", defaultValue = "0") Integer sortValue,
+            @RequestParam(value = "page", defaultValue = "0") int page) {
 
         // 사용자 id 가져오기(SecurityContextHolder)
         authentication = SecurityContextHolder.getContext().getAuthentication();
         id = authentication.getName();
-       
+
         switch (title) {
 
             case "dashBoard":
-                //페이지 정보 외 페이지로 보낼 데이터
+                // 페이지 정보 외 페이지로 보낼 데이터
                 model.addAttribute("title", title);
 
                 break;
@@ -66,18 +65,26 @@ public class AdminController {
                 break;
 
             case "goodsList":
-            	Page<GoodsDto> goods = goodsService.findAll(sortValue, page, category);
-            	model.addAttribute("goods", goods);
-            	model.addAttribute("sortValue", sortValue);
+                Page<GoodsDto> goods = goodsService.findAll(sortValue, page, category);
+                model.addAttribute("goods", goods);
+                model.addAttribute("sortValue", sortValue);
                 model.addAttribute("category", category);
                 break;
-                
+
             case "goodsCs":
                 Page<GoodsQnADto> goodsQnADtos = goodsCSService.findbyGoodsQnA(page);
                 model.addAttribute("goodsQnAs", goodsQnADtos);
-            	break;
+                break;
 
-            case "myBoard":
+            case "boardNotice":
+
+                break;
+
+            case "reportBoard":
+
+                break;
+
+            case "reportBoardReply":
 
                 break;
 
@@ -85,12 +92,11 @@ public class AdminController {
                 break;
         }
 
-        //수정
+        // 수정
 
+        // 삭제
 
-        //삭제
-
-        //리플레이스 할 페이지 정보
+        // 리플레이스 할 페이지 정보
         model.addAttribute("title", title);
 
         return "/admin/admin";
@@ -99,8 +105,8 @@ public class AdminController {
     @PostMapping("/deleteGoods")
     public ResponseEntity<String> deleteGoods(@RequestBody List<Integer> goodsItems) {
         System.out.println(goodsItems);
-        for(Integer goodsItem:goodsItems){
-//            goodsService.delete(goodsItem);
+        for (Integer goodsItem : goodsItems) {
+            // goodsService.delete(goodsItem);
         }
         return ResponseEntity.ok(goodsItems.size() + "개가 삭제되었습니다.");
     }

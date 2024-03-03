@@ -2,6 +2,7 @@ package ggs.ggs.mypage;
 
 import ggs.ggs.board.BoardService;
 import ggs.ggs.domain.GoodsLike;
+import ggs.ggs.domain.Hashtag;
 import ggs.ggs.domain.MemberFile;
 import ggs.ggs.dto.*;
 import ggs.ggs.goods.GoodsCSService;
