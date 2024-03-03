@@ -66,9 +66,6 @@
 				</li>
 			</ul> -->
 						</ul>
-						<ul>
- 				           <div th:insert="~{fragments/reply :: boardreply(replyList = ${board. Replydtos})}"></div>					
-						</ul>						
 					</li>
 				</ul>
 			</div>
@@ -101,13 +98,14 @@
 				},
 			});
 		</script>
-            <div th:each="boardList:${boardList}">
-                <div th:class="'bmodal-container'+${boardList.idx} +' modal-container'">
+            <div th:each="board:${boardList}">
+                <div th:class="'bmodal-container'+${board.idx} +' modal-container'">
                     <div class="modal-background">
                         <div class="modal" >
                             <div class="mScroll">
-                                <div class="modalOut1" th:name="${boardList.idx}" onclick="modalOut1()">X</div>
-                                <div th:replace="~{board/board_detail :: boardDetailFragment(board = ${boardList})}"></div>
+                                <div class="modalOut1" th:name="${board.idx}" onclick="modalOut1()">X</div>
+                                <div th:replace="~{board/board_detail :: boardDetailFragment(board = ${board})}"></div>     
+								<div th:insert="~{fragments/reply :: boardreply(replyList = ${board.replydtos})}"></div>                                                           
                             </div>
                         </div>
                     </div>

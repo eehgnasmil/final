@@ -56,7 +56,7 @@ public class OrderItem {
         this.name = cartItem.getGoodsOption().getGoods().getName();
         this.goods = cartItem.getGoodsOption().getGoods();
         this.color = cartItem.getGoodsOption().getColor();
-        this.size = cartItem.getGoodsOption().getColor();
+        this.size = cartItem.getGoodsOption().getSize();
         this.cnt = cartItem.getCnt();
         this.order = order;
 

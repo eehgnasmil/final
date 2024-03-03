@@ -9,10 +9,14 @@
     </ul>
     <script>
         function goodsLike(idx) {
+			if($('.like').css("background-image", "url('/img/li2ke.png')")){
+				alert("ㅎㅇ?")
+			}
             $.ajax({
                 type: 'POST',
                 data: {
                     "goods": idx
+                    
                 },
                 url: "/like/goodsLike",
                 beforeSend: function (xhr) {

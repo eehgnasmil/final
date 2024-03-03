@@ -7,5 +7,5 @@ $(function(){
 });
 
 function loginPage(){
-    alert('로그인해야되지ㅗㄹㅇ')
+    alert('로그인이 필요합니다.')
 }
