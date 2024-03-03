@@ -5,23 +5,12 @@
     <h2 class="title">구매 내역</h2>
     <div class="myModify_wrap" style="margin-top: 50px;">
         <table>
-            <tr class="tableTr">
-                <td>주문정보
-                    [주문일자]
-                </td>
-                <td>이미지</td>
-                <td>상품명</td>
-                <td>상품설명</td>
-                <td>상품금액</td>
-                <td>상태</td>
-            </tr>
-
             <div th:each="order:${orderItem}">
                 <div th:each="cartItem, stat:*{order.cartItems}">
                     <tr th:if="${stat.index == 0}">
-                        <td th:rowspan="${order.cartItems.size}">
+                        <td th:rowspan="${order.cartItems.size}" style="width: 200px;">
                             <span><a th:href="|/order/orderdetail/${order.idx}|" th:text="${order.orderNum}"></a></span><br><br>
-                            [<span th:text="${order.created_date}"></span>]
+                            [ <span th:text="${#temporals.format(order.created_date, 'yyyy-MM-dd HH:mm:ss')}"></span> ]
                         </td>
                         <ul th:if="${cartItem.goodsDto != null}" th:each="goods : ${cartItem.goodsDto}">
                             <td style="width: 80px;">
@@ -37,6 +26,8 @@
                             <td>
                                 <span th:text="${cartItem.color}"></span> &#47
                                 <span th:text="${cartItem.size}"></span><br>
+                            </td>
+                            <td>
                                 <span th:text="${cartItem.cnt}"/>
                             </td>
                             <td>
@@ -79,6 +70,8 @@
                             <td>
                                 <span th:text="${cartItem.color}"></span> &#47
                                 <span th:text="${cartItem.size}"></span><br>
+                            </td>
+                            <td>
                                 <span th:text="${cartItem.cnt}"/>
                             </td>
                             <td>
@@ -89,7 +82,7 @@
                     </tr>
                 </div>
                 <tr>
-                    <td colspan="6" style="text-align: right;">
+                    <td colspan="7" style="text-align: right;">
                         상품가격 <span th:text="${order.price}" style="font-weight: 800;"></span><span
                             style="font-weight: 800;">원</span>
                         + 배송비 <span th:text="${order.delivery_price}" style="font-weight: 800;"></span><span
