@@ -8,8 +8,13 @@
         <li sec:authorize="!isAuthenticated()"><a href="/member/login">로그인 후 이용해주세요</a></li>
         <li th:each="lists:${replyList}" th:if="${lists.parentIdx == null}">
             <ul>
+                <li th:text="${lists.idx}"></li>
                 <li th:text="${lists.nickname}"></li>
                 <li th:text="${lists.comment}"></li>
+                <div th:insert="~{fragments/like :: replyLike}" sec:authorize="isAuthenticated()">
+                </div>
+                <div th:insert="~{fragments/report :: replyReport}" sec:authorize="isAuthenticated()">
+                </div>
                 <li th:text="${#temporals.format(lists.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
                 <button th:if="${lists.member == ridx}" onclick="showEditBox(this)">댓글 수정</button> <input type="text"
                     th:id="'editBox' + ${lists.idx}" style="display:none;"> <button
@@ -26,8 +31,13 @@
             <ul th:each="childReply:${lists.childReplies}">
                 <li>
                     <ul>
+                        <li th:text="${childReply.idx}"></li>
                         <li th:text="${childReply.nickname}"></li>
                         <li th:id="'comment' + ${childReply.idx}" th:text="${childReply.comment}"></li>
+                        <div th:insert="~{fragments/like :: childReplyLike}" sec:authorize="isAuthenticated()">
+                        </div>
+                        <div th:insert="~{fragments/report :: childReplyReport}" sec:authorize="isAuthenticated()">
+                        </div>
                         <li th:text="${#temporals.format(childReply.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
                         <button th:if="${childReply.member == ridx}" onclick="showEditBox(this)">수정</button>
                         <input type="text" th:id="'editBox' + ${childReply.idx}" style="display:none;">
@@ -41,8 +51,9 @@
                 </li>
             </ul>
         </li>
-        <!--<li th:unless="${replyList.size() > 0}">댓글이 없습니다.</li>-->
+        <li th:unless="${replyList.size() > 0}">댓글이 없습니다.</li>
     </ul>
+
     <script>
         var header = $("meta[name='_csrf_header']").attr('content');
         var token = $("meta[name='_csrf']").attr('content');

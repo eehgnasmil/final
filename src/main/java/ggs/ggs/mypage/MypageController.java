@@ -82,6 +82,8 @@ public class MypageController {
                 break;
 
             case "myReply":
+                Page<BoardDto> myReply = boardService.getBoardsByUserReplies(id, page);
+                model.addAttribute("myReply", myReply);
                 break;
 
             case "myBoardLike":

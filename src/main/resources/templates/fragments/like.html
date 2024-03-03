@@ -3,20 +3,25 @@
 
 <div th:fragment="goodsLike" style="display: inline-block;">
     <ul>
-        <div sec:authorize="isAuthenticated()" th:if="${likeTF}" class="likeBtn" type="button" th:onclick="'javascript:goodsLike(' + ${goods.idx} + ')'" style="background-image : url('/img/like.png');"></div>
-        <div sec:authorize="isAuthenticated()" th:if="${!likeTF}" class="likeBtn" type="button" th:onclick="'javascript:goodsLike(' + ${goods.idx} + ')'" style="background-image : url('/img/unlike.png');"></div>
-        <div sec:authorize="isAnonymous()" th:if="${!likeTF}" class="likeBtn" type="button" onclick="loginPage()" style="background-image : url('/img/unlike.png');"></div>
+        <div sec:authorize="isAuthenticated()" th:if="${likeTF}" class="likeBtn" type="button"
+            th:onclick="'javascript:goodsLike(' + ${goods.idx} + ')'" style="background-image : url('/img/like.png');">
+        </div>
+        <div sec:authorize="isAuthenticated()" th:if="${!likeTF}" class="likeBtn" type="button"
+            th:onclick="'javascript:goodsLike(' + ${goods.idx} + ')'"
+            style="background-image : url('/img/unlike.png');"></div>
+        <div sec:authorize="isAnonymous()" th:if="${!likeTF}" class="likeBtn" type="button" onclick="loginPage()"
+            style="background-image : url('/img/unlike.png');"></div>
     </ul>
     <script>
         function goodsLike(idx) {
-			if($('.like').css("background-image", "url('/img/li2ke.png')")){
-				alert("ㅎㅇ?")
-			}
+            if ($('.like').css("background-image", "url('/img/li2ke.png')")) {
+                alert("ㅎㅇ?")
+            }
             $.ajax({
                 type: 'POST',
                 data: {
                     "goods": idx
-                    
+
                 },
                 url: "/like/goodsLike",
                 beforeSend: function (xhr) {
@@ -58,6 +63,34 @@
             });
         }
     </script>
+</div>
+
+<div th:fragment="replyLike">
+    <button type="button" th:onclick="'javascript:replyLike(' + ${lists.idx} + ')'">replyLike</button>
+    <script>
+        function replyLike(idx) {
+            console.log(idx);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    "reply": idx
+                },
+                url: "/like/replyLike",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (json) {
+                    alert(json)
+                },
+                error: function () {
+                    console.log("error");
+                },
+            });
+        }
+    </script>
+</div>
+<div th:fragment="childReplyLike">
+    <button type="button" th:onclick="'javascript:replyLike(' + ${childReply.idx} + ')'">replyLike</button>
 </div>
 
 </html>

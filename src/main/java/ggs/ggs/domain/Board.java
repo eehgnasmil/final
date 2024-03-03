@@ -55,6 +55,7 @@ public class Board {
     private String acc;
 
     private int likesCount;
+    private int reportCount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberidx")
@@ -62,6 +63,9 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BoardLike> boardlike = new ArrayList<>();
+
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<BoardReport> boardreport = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reply> replies = new ArrayList<>();
@@ -77,6 +81,10 @@ public class Board {
         this.likesCount = likesCount;
     }
 
+    public void setReportCount(int reportCount) {
+        this.reportCount = reportCount;
+    }
+
     public void update(BoardDto dto) {
         this.title = dto.getTitle();
         this.detail = dto.getDetail();
@@ -88,13 +96,13 @@ public class Board {
         this.shoes = dto.getShoes();
     }
 
-	@Override
-	public String toString() {
-		return "Board [idx=" + idx + ", title=" + title + ", detail=" + detail + ", viewcount=" + viewcount
-				+ ", createdDate=" + createdDate + ", modifiedDate=" + modifiedDate + ", category=" + category
-				+ ", outerwear=" + outerwear + ", top=" + top + ", bottom=" + bottom + ", shoes=" + shoes + ", acc="
-				+ acc + ", likesCount=" + likesCount + ", member=" + member + ", boardlike=" + boardlike + ", replies="
-				+ replies + ", middleTags=" + middleTags + "]";
-	}
+    @Override
+    public String toString() {
+        return "Board [idx=" + idx + ", title=" + title + ", detail=" + detail + ", viewcount=" + viewcount
+                + ", createdDate=" + createdDate + ", modifiedDate=" + modifiedDate + ", category=" + category
+                + ", outerwear=" + outerwear + ", top=" + top + ", bottom=" + bottom + ", shoes=" + shoes + ", acc="
+                + acc + ", likesCount=" + likesCount + ", member=" + member + ", boardlike=" + boardlike + ", replies="
+                + replies + ", middleTags=" + middleTags + "]";
+    }
 
 }
