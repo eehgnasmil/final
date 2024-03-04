@@ -1,11 +1,14 @@
 package ggs.ggs.member;
 
+import ggs.ggs.board.BoardService;
 import ggs.ggs.domain.Follow;
+import ggs.ggs.dto.BoardDto;
 import ggs.ggs.dto.GoodsDto;
 import ggs.ggs.dto.MemberDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +30,8 @@ public class MemberController {
     @Qualifier("memberServiceImpl")
     private final MemberService memberService;
     private final PasswordEncoder passwordEncoder;
+
+    private final BoardService boardService;
 
 
     //회원가입==============================================================================================================//
@@ -51,9 +56,9 @@ public class MemberController {
     @PostMapping("/join")
     public String join(@ModelAttribute MemberDto memberDto)throws Exception{
         System.out.println(memberDto);
-    	String encPw = passwordEncoder.encode(memberDto.getPw());
+       String encPw = passwordEncoder.encode(memberDto.getPw());
         System.out.println(memberDto);
-    	memberDto.setPw(encPw);
+       memberDto.setPw(encPw);
         memberService.create(memberDto);
         return "redirect:/";
     }
@@ -66,14 +71,15 @@ public class MemberController {
 
     //userpage==============================================================================================================//
     @GetMapping("/userPage/{id}")
-    public String userPage(Model model, @PathVariable("id") String id, Authentication authentication) {
+    public String userPage(Model model, @PathVariable("id") String id, Authentication authentication,
+                           @RequestParam(value = "page", defaultValue = "0") int page) {
         //내 정보 확인
         authentication = SecurityContextHolder.getContext().getAuthentication();
         String sid = authentication.getName();
         String fwid; //팔로워
         String fid; //팔로우
         model.addAttribute("sid", sid);
-        //내가 팔로우 한 상태인지 체크
+        //내가 팔로우 한 상태인지 체크`
         boolean follow = memberService.followCheck(sid, id);
         model.addAttribute("followCheck", follow);
 
@@ -97,6 +103,8 @@ public class MemberController {
             follows.add(fid);
         }
 
+        Page<BoardDto> myBoards = boardService.getMyboards(id, page);
+        model.addAttribute("myBoards", myBoards);
         model.addAttribute("followerList", followers);
         model.addAttribute("followList", follows);
 

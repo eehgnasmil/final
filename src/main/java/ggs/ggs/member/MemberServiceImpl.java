@@ -14,12 +14,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +32,7 @@ public class MemberServiceImpl implements MemberService {
     @Qualifier("memberFileServiceImpl")
     private final MemberFileServiceImpl fileService;
 
-
-    //아이디, 닉네임, 이메일 중복 확인(1=중복 데이터 있음, 0=중복데이터 없음)
+    // 아이디, 닉네임, 이메일 중복 확인(1=중복 데이터 있음, 0=중복데이터 없음)
     public String check(Map<String, String> data) {
         String key = null;
         String val = null;
@@ -71,20 +72,19 @@ public class MemberServiceImpl implements MemberService {
         return rs;
     }
 
-    //체크된 데이터 저장 => memberRepository.save(member);
+    // 체크된 데이터 저장 => memberRepository.save(member);
     public Member create(MemberDto dto) throws IOException {
         Member member = new Member(dto);
         FileDto fileDto = new FileDto();
         if (dto.getFileDto() != null) {
             fileDto = fileService.insert(dto.getFileDto().getFile());
 
-        } else{
+        } else {
             fileDto.setPath("/img/nProfile.png");
         }
         fileDto.setMember(member);
         MemberFile memberFile = new MemberFile(fileDto);
         member.setFile(memberFile);
-
 
         memberRepository.save(member);
         return member;
@@ -136,4 +136,27 @@ public class MemberServiceImpl implements MemberService {
         return followList;
     }
 
+    // 여기 밑으로는 다 관리자 관련
+    @Override
+    public List<MemberDto> getAllMembers() {
+        List<Member> members = memberRepository.findAll();
+        return members.stream()
+                .map(MemberDto::new)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void deleteMember(Integer memberIdx) {
+        Member member = memberRepository.findById(memberIdx)
+                .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. idx=" + memberIdx));
+        memberRepository.delete(member);
+    }
+
+    @Override
+    public void changeRole(Integer memberIdx, Member.Role newRole) {
+        Member member = memberRepository.findById(memberIdx)
+            .orElseThrow(() -> new IllegalArgumentException("해당 사용자가 존재하지 않습니다. idx=" + memberIdx));
+        member.setRole(newRole);
+        memberRepository.save(member); // 변경된 엔티티를 저장합니다.
+    }
 }

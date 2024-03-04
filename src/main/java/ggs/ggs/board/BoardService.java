@@ -1,5 +1,6 @@
 package ggs.ggs.board;
 
+import ggs.ggs.domain.Board;
 import ggs.ggs.domain.Hashtag;
 import ggs.ggs.dto.BoardDto;
 
@@ -33,5 +34,10 @@ public interface BoardService {
 
     Page<BoardDto> getBoardsByUserReplies(String id, int page);
 
+    List<BoardDto> getReportedBoards(); 
+
+    void AdmindeleteBoard(Long boardIdx);
+    void punishBoard(Long boardIdx);
+    void unpunishBoard(Long boardIdx);
 
 }

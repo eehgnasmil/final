@@ -4,47 +4,60 @@
     <ul> <input type="hidden" id="boardIdx" th:value="${board.idx}" />
         <li sec:authorize="!isAuthenticated()"><a href="/member/login">로그인 후 이용해주세요</a></li>
         <li th:each="lists:${replyList}" th:if="${lists.parentIdx == null}">
-            <ul>
-                <li th:text="${lists.idx}"></li>
-                <li th:text="${lists.nickname}"></li>
-                <li th:text="${lists.comment}"></li>
-                <span style="display: inlie-block;" th:insert="~{fragments/like :: replyLike}" sec:authorize="isAuthenticated()">
-                </span>
-                <span style="display: inlie-block;" th:insert="~{fragments/report :: replyReport}" sec:authorize="isAuthenticated()">
-                </span>
-                <li th:text="${#temporals.format(lists.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
-                <button th:if="${lists.member == ridx}" onclick="showEditBox(this)">댓글 수정</button> <input type="text"
-                    th:id="'editBox' + ${lists.idx}" style="display:none;"> <button
-                    th:attr="onclick='saveEdit(\'#editBox\' + \'' + ${lists.idx} + '\', \'' + ${lists.idx} + '\')'"
-                    style="display:none;" th:id="'saveEditButton' + ${lists.idx}">수정 저장</button> <button
-                    th:id="'cancelEditButton' + ${lists.idx}" style="display:none;" onclick="cancelEdit(this)">수정
-                    취소</button> <button th:if="${lists.member == ridx}"
-                    th:attr="onclick='deleteReply(' + ${lists.idx} + ')'">댓글 삭제</button>
-            </ul> <button sec:authorize="isAuthenticated()" onclick="showReplyBox(this)">답글등록</button> <input
-                type="text" th:id="'replyBox' + ${lists.idx}" style="display:none;"> <button
-                th:attr="onclick='savereply(\'#replyBox\' + \'' + ${lists.idx} + '\', \'' + ${lists.idx} + '\')'"
-                style="display:none;" th:id="'saveButton' + ${lists.idx}">답글저장</button> <button
-                th:id="'cancelButton' + ${lists.idx}" style="display:none;" onclick="cancelEdit(this)">취소</button>
+            <div th:if="${lists.reportCount < 2 or #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                <ul>
+                    <li th:text="${lists.idx}"></li>
+                    <li th:text="${lists.nickname}"></li>
+                    <li th:text="${lists.comment}"></li>
+                    <div th:insert="~{fragments/like :: replyLike}" sec:authorize="isAuthenticated()">
+                    </div>
+                    <div th:insert="~{fragments/report :: replyReport}" sec:authorize="isAuthenticated()">
+                    </div>
+                    <li th:text="${#temporals.format(lists.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
+                    <button th:if="${lists.member == ridx}" onclick="showEditBox(this)">댓글 수정</button> <input
+                        type="text" th:id="'editBox' + ${lists.idx}" style="display:none;"> <button
+                        th:attr="onclick='saveEdit(\'#editBox\' + \'' + ${lists.idx} + '\', \'' + ${lists.idx} + '\')'"
+                        style="display:none;" th:id="'saveEditButton' + ${lists.idx}">수정 저장</button> <button
+                        th:id="'cancelEditButton' + ${lists.idx}" style="display:none;" onclick="cancelEdit(this)">수정
+                        취소</button> <button th:if="${lists.member == ridx}"
+                        th:attr="onclick='deleteReply(' + ${lists.idx} + ')'">댓글 삭제</button>
+                    <button sec:authorize="isAuthenticated()" onclick="showReplyBox(this)">답글등록</button> <input
+                        type="text" th:id="'replyBox' + ${lists.idx}" style="display:none;"> <button
+                        th:attr="onclick='savereply(\'#replyBox\' + \'' + ${lists.idx} + '\', \'' + ${lists.idx} + '\')'"
+                        style="display:none;" th:id="'saveButton' + ${lists.idx}">답글저장</button> <button
+                        th:id="'cancelButton' + ${lists.idx}" style="display:none;"
+                        onclick="cancelEdit(this)">취소</button>
+                </ul>
+            </div>
+            <div th:if="${lists.reportCount >= 2 and !#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                <p>이 게시글은 신고 횟수가 2회 이상으로, 내용을 보여줄 수 없습니다.</p>
+            </div>
             <ul th:each="childReply:${lists.childReplies}">
                 <li>
-                    <ul>
-                        <li th:text="${childReply.idx}"></li>
-                        <li th:text="${childReply.nickname}"></li>
-                        <li th:id="'comment' + ${childReply.idx}" th:text="${childReply.comment}"></li>
-                        <span style="display: inline-block;" th:insert="~{fragments/like :: childReplyLike}" sec:authorize="isAuthenticated()">
-                        </span>
-                        <span style="display: inline-block;" th:insert="~{fragments/report :: childReplyReport}" sec:authorize="isAuthenticated()">
-                        </span>
-                        <li th:text="${#temporals.format(childReply.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
-                        <button th:if="${childReply.member == ridx}" onclick="showEditBox(this)">수정</button>
-                        <input type="text" th:id="'editBox' + ${childReply.idx}" style="display:none;">
-                        <button
-                            th:attr="onclick='saveEdit(\'#editBox\' + \'' + ${childReply.idx} + '\', \'' + ${childReply.idx} + '\')'"
-                            style="display:none;" th:id="'saveEditButton' + ${childReply.idx}">수정 저장</button>
-                        <button th:id="'cancelEditButton' + ${childReply.idx}" style="display:none;"
-                            onclick="cancelEdit(this)">수정 취소</button> <button th:if="${childReply.member == ridx}"
-                            th:attr="onclick='deleteReply(' + ${childReply.idx} + ')'">댓글 삭제</button>
-                    </ul>
+                    <div th:if="${childReply.reportCount < 2 or #authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                        <ul>
+                            <li th:text="${childReply.idx}"></li>
+                            <li th:text="${childReply.nickname}"></li>
+                            <li th:id="'comment' + ${childReply.idx}" th:text="${childReply.comment}"></li>
+                            <div th:insert="~{fragments/like :: childReplyLike}" sec:authorize="isAuthenticated()">
+                            </div>
+                            <div th:insert="~{fragments/report :: childReplyReport}" sec:authorize="isAuthenticated()">
+                            </div>
+                            <li th:text="${#temporals.format(childReply.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></li>
+                            <button th:if="${childReply.member == ridx}" onclick="showEditBox(this)">수정</button>
+                            <input type="text" th:id="'editBox' + ${childReply.idx}" style="display:none;">
+                            <button
+                                th:attr="onclick='saveEdit(\'#editBox\' + \'' + ${childReply.idx} + '\', \'' + ${childReply.idx} + '\')'"
+                                style="display:none;" th:id="'saveEditButton' + ${childReply.idx}">수정 저장</button>
+                            <button th:id="'cancelEditButton' + ${childReply.idx}" style="display:none;"
+                                onclick="cancelEdit(this)">수정 취소</button> <button th:if="${childReply.member == ridx}"
+                                th:attr="onclick='deleteReply(' + ${childReply.idx} + ')'">댓글 삭제</button>
+                        </ul>
+                    </div>
+                    <div
+                        th:if="${childReply.reportCount >= 2 and !#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+                        <p>이 게시글은 신고 횟수가 2회 이상으로, 내용을 보여줄 수 없습니다.</p>
+                    </div>
                 </li>
             </ul>
         </li>

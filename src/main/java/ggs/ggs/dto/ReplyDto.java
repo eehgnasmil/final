@@ -10,6 +10,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
+
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -17,15 +19,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class ReplyDto {
-    @Override
-	public String toString() {
-		return "ReplyDto [idx=" + idx + ", member=" + member + ", nickname=" + nickname + ", board=" + board
-				+ ", comment=" + comment + ", parentIdx=" + parentIdx + ", createdDate=" + createdDate
-				+ ", modifiedDate=" + modifiedDate + ", childReplies=" + childReplies + "]";
-	}
 
-	private Long idx;
+    private Long idx;
     private Integer member;
     private String nickname;
     private Long board;
@@ -33,6 +30,8 @@ public class ReplyDto {
     private Long parentIdx;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
+    private int reportCount;
+
     private List<ReplyDto> childReplies = new ArrayList<>();
 
     public Reply toEntity(Member member, Board board, Reply parent) {
@@ -54,6 +53,7 @@ public class ReplyDto {
                 reply.getParent() != null ? reply.getParent().getIdx() : null,
                 reply.getCreatedDate(),
                 reply.getModifiedDate(),
+                reply.getReportCount(),
                 new ArrayList<>());
 
         // 대댓글 설정

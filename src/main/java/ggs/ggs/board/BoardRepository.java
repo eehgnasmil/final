@@ -1,6 +1,7 @@
 package ggs.ggs.board;
 
 import ggs.ggs.domain.Board;
+import ggs.ggs.domain.BoardReport;
 import ggs.ggs.domain.Hashtag;
 import ggs.ggs.domain.Member;
 
@@ -31,5 +32,7 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
 
     @Query("SELECT mt.hashtag FROM MiddleTag mt WHERE mt.board.idx = :boardIdx")
     List<Hashtag> findHashtagsByBoardIdx(@Param("boardIdx") Long idx);
+
+    List<Board> findByReportCountGreaterThanOrderByReportCountDesc(int reportCount);
 
 }

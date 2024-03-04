@@ -26,4 +26,11 @@ public interface MemberService {
     void updateFollow(String toUserId, String fromUserId);
 
     void unFollow(String toUserId, String fromUserId);
+
+    //이거 다 관리자관련
+    List<MemberDto> getAllMembers();
+    void deleteMember(Integer memberIdx);
+    void changeRole(Integer memberIdx, Member.Role newRole);
+
+
 }

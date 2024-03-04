@@ -41,25 +41,26 @@ function loadMore() {
         dataType: 'json',
         success: function (data) {
             $.each(data.content, function (i, board) {
+                console.log(board.member); // 데이터
                 // 게시물 HTML 생성
                 let boardHtml = `
                                  <li style="width: 25%; padding:0 0 60px 0; display:inline-block; ">
                                  	<div style="position:relative; height: 0; padding-bottom:120%; overflow:hidden;" class="mySwiper2 swiper">
                                        <ul class="swiper-wrapper">
                    						 ${board.imageUrls.map(imageUrl =>
-						                `<li class="swiper-slide" style="padding-bottom:130%;">
+                    `<li class="swiper-slide" style="padding-bottom:130%;">
 						                	<a href="/board/board_detail/${board.idx}"><img src="${imageUrl}" alt="Board image"></a>
 						                </li>`)}
 						                </ul>
 						             </div>`;
-                boardHtml +=`<ul class="bUl" style="width:90%; margin:0 auto; position:relative;">               
-											<li style="background: rgba(0, 0, 0, 0.5); width: 100%; text-align: left; position: absolute; top: -75px; z-index: 99;">
-												<span style="display:inline-block; width:50px; height:50px; margin-left:20px; border-radius:100px; overflow:hidden;">
-													<img src="${board.memeberImg}" alt="이미지" style="width:100%;">
+                boardHtml += `<ul class="bUl" style="width:90%; margin:0 auto; position:relative;">               
+											<li style="text-align:left; position:absolute; top:-75px; z-index:99; left:20px; ">
+												<span style="display:inline-block; width:50px; height:50px;  border-radius:100px; overflow:hidden;">
+                                                <a href="/member/userPage/${board.memberId}"><img src="${board.memeberImg}" alt="이미지" style="width:100%;"></a>
 												</span>
-												<span style="line-height: 50px; display: inline-block; height: 50px; vertical-align: bottom; margin-left:10px; color:white; letter-spacing:1px;  text-shadow: 4px 2px 2px gray; font-weight:600;">
+												<a href="/member/userPage/${board.memberId}"><span style="line-height: 50px; display: inline-block; height: 50px; vertical-align: bottom; margin-left:10px; color:white; letter-spacing:1px;  text-shadow: 4px 2px 2px gray; font-weight:600;">
 													${board.nickname}
-												</span>                                	
+												</span></a>                                	
 											</li>
 											<li style="text-align:right;">
 												<span  style="letter-spacing:1px;">
@@ -68,14 +69,14 @@ function loadMore() {
 												<span  style="margin:0 10px; letter-spacing:1px;">
 			                                        ♡ ${board.likesCount}												
 												</span>											
-											</li>	                          
+											</li>	
 	                                        <li><a href="/board/board_detail/${board.idx}">${board.title}</a></li>
 	                                        <li>${board.category}</li>`
                 if (board.hashtags && board.hashtags.length > 0) {
                     let hashtags = board.hashtags.map(hashtag => `<a href="/board/hashtag/${encodeURIComponent(hashtag)}">${hashtag}</a>`);
                     boardHtml += `<li>${hashtags.join(' ')}</li>`;
-                }                           
-	            boardHtml +=`</ul></li>`
+                }
+                boardHtml += `</ul></li>`
                 $('#boardList').append(boardHtml);
             });
         },

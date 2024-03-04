@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="boardReport" style="display: inline-block;">
+<div th:fragment="boardReport">
     <ul>
-        <span type="button" th:onclick="'javascript:boardReport(' + ${board.idx} + ')'"><img src="/img/siren.png" class="siren"></span>
+        <button type="button" th:onclick="'javascript:boardReport(' + ${board.idx} + ')'">boardReport</button>
     </ul>
     <script>
         function boardReport(idx) {
@@ -28,8 +28,8 @@
     </script>
 </div>
 
-<div th:fragment="replyReport" style="display: inline-block;">
-    <span type="button" th:onclick="'javascript:replyReport(' + ${lists.idx} + ')'"><img src="/img/siren.png" class="siren"></span>
+<div th:fragment="replyReport">
+    <button type="button" th:onclick="'javascript:replyReport(' + ${lists.idx} + ')'">replyReport</button>
     <script>
         function replyReport(idx) {
             console.log(idx);
@@ -53,8 +53,8 @@
     </script>
 </div>
 
-<div th:fragment="childReplyReport" style="display: inline-block;">
-    <span type="button" th:onclick="'javascript:replyReport(' + ${childReply.idx} + ')'"><img src="/img/siren.png" class="siren"></span>
+<div th:fragment="childReplyReport">
+    <button type="button" th:onclick="'javascript:replyReport(' + ${childReply.idx} + ')'">replyReport</button>
 </div>
 
 </html>

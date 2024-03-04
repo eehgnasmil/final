@@ -80,4 +80,32 @@ public class BoardReplyServiceImpl implements ReplyService {
                                 .collect(Collectors.toList());
         }
 
+        @Override
+        public List<ReplyDto> getReportedReplies() {
+                List<Reply> reportedReplies = replyRepository.findByReportCountGreaterThanOrderByReportCountDesc(0);
+                return reportedReplies.stream()
+                                .map(ReplyDto::from)
+                                .collect(Collectors.toList());
+        }
+
+        @Override
+        public void deleteReply(Long idx) {
+                replyRepository.deleteById(idx);
+        }
+
+        @Override
+        public void punishReply(Long idx) {
+                Reply reply = replyRepository.findById(idx)
+                                .orElseThrow(() -> new IllegalArgumentException("Reply not found with ID: " + idx));
+                reply.setReportCount(10);
+                replyRepository.save(reply);
+        }
+
+        @Override
+        public void unpunishReply(Long idx) {
+                Reply reply = replyRepository.findById(idx)
+                                .orElseThrow(() -> new IllegalArgumentException("Reply not found with ID: " + idx));
+                reply.setReportCount(0);
+                replyRepository.save(reply);
+        }
 }

@@ -216,4 +216,33 @@ public class BoardServiceImpl implements BoardService {
         return boardDto;
     }
 
+    @Override
+    public List<BoardDto> getReportedBoards() {
+        List<Board> reportedBoards = boardRepository.findByReportCountGreaterThanOrderByReportCountDesc(0);
+        return reportedBoards.stream()
+                .map(BoardDto::new)
+                .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public void AdmindeleteBoard(Long boardIdx) {
+        boardRepository.deleteById(boardIdx);
+    }
+
+    @Override
+    public void punishBoard(Long boardIdx) {
+        Board board = boardRepository.findById(boardIdx)
+            .orElseThrow(() -> new IllegalArgumentException("Board not found with ID: " + boardIdx));
+        board.setReportCount(10);
+        boardRepository.save(board);
+    }
+
+    @Override
+    public void unpunishBoard(Long boardIdx) {
+        Board board = boardRepository.findById(boardIdx)
+            .orElseThrow(() -> new IllegalArgumentException("Board not found with ID: " + boardIdx));
+        board.setReportCount(0);
+        boardRepository.save(board);
+    }
 }

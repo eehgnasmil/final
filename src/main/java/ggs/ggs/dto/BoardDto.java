@@ -25,6 +25,7 @@ public class BoardDto {
     private String detail;
     private String nickname;
     private Integer memberidx;
+    private String memberId;
     private String memeberImg;
     private int viewcount;
     private LocalDateTime createdDate;
@@ -53,6 +54,7 @@ public class BoardDto {
         }
         this.memberidx = board.getMember().getIdx();
         this.nickname = board.getMember().getNick();
+        this.memberId = board.getMember().getId();
         this.viewcount = board.getViewcount();
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
@@ -64,10 +66,10 @@ public class BoardDto {
         this.shoes = board.getShoes();
         this.likesCount = board.getLikesCount();
         this.reportCount = board.getReportCount();
-        if(board.getReplies()!=null ) {
-        this.replydtos = board.getReplies().stream()
-        		.map(reply -> new ReplyDto().from(reply))
-                .collect(Collectors.toList());
+        if (board.getReplies() != null) {
+            this.replydtos = board.getReplies().stream()
+                    .map(reply -> new ReplyDto().from(reply))
+                    .collect(Collectors.toList());
         }
     }
 
@@ -81,7 +83,7 @@ public class BoardDto {
                 .top(this.top)
                 .acc(this.acc)
                 .shoes(this.shoes)
-                .member(member) // Member 설정
+                .member(member)
                 .build();
     }
 
@@ -94,13 +96,4 @@ public class BoardDto {
         dto.setHashtags(hashtags);
         return dto;
     }
-
-	// @Override
-	// public String toString() {
-	// 	return "BoardDto [idx=" + idx + ", title=" + title + ", detail=" + detail + ", nickname=" + nickname
-	// 			+ ", memberidx=" + memberidx + ", viewcount=" + viewcount + ", createdDate=" + createdDate
-	// 			+ ", modifiedDate=" + modifiedDate + ", category=" + category + ", outerwear=" + outerwear + ", top="
-	// 			+ top + ", bottom=" + bottom + ", shoes=" + shoes + ", acc=" + acc + ", likesCount=" + likesCount
-	// 			+ ", replydtos=" + replydtos + ", hashtags=" + hashtags + ", imageUrls=" + imageUrls + "]";
-	// }
 }

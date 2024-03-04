@@ -3,24 +3,15 @@ package ggs.ggs.board;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import javax.lang.model.element.Element;
-import javax.lang.model.util.Elements;
 
-import org.jsoup.Jsoup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.Document;
 
-import ggs.ggs.domain.Board;
-import ggs.ggs.domain.BoardLike;
-import ggs.ggs.domain.GoodsLike;
 import ggs.ggs.domain.Member;
 import ggs.ggs.domain.Reply;
 import ggs.ggs.domain.ReplyLike;
-import ggs.ggs.dto.BoardDto;
-import ggs.ggs.dto.GoodsDto;
 import ggs.ggs.dto.ReplyDto;
 import ggs.ggs.member.MemberRepository;
 import ggs.ggs.service.LikeService;

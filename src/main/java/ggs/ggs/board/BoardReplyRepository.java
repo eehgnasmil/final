@@ -18,4 +18,6 @@ public interface BoardReplyRepository extends JpaRepository<Reply, Long> {
 
     List<Reply> findByMember(Member member);
 
+    List<Reply> findByReportCountGreaterThanOrderByReportCountDesc(int reportCount);
+
 }

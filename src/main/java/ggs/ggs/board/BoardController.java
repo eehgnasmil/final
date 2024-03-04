@@ -35,6 +35,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -110,7 +111,7 @@ public class BoardController {
             @RequestParam(value = "bsort", defaultValue = "new") String bsort,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "15") int size) {
-    	System.out.println("살려줘");
+        System.out.println("살려줘");
 
         Sort sort;
         if ("new".equals(bsort)) {
@@ -221,4 +222,5 @@ public class BoardController {
             @RequestParam(value = "size", defaultValue = "10") int size) {
         return boardService.getBoardsByHashtag(hashtag, page, size); // 수정된 부분
     }
+
 }
