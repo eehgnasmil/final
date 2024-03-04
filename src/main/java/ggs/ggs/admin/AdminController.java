@@ -18,6 +18,8 @@ import ggs.ggs.goods.GoodsCSService;
 import ggs.ggs.goods.GoodsService;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -55,9 +57,17 @@ public class AdminController {
        
         switch (title) {
 
-            case "dashBoard":
+            case "dashboard":
+                System.out.println("dddd");
+                LocalDate end = LocalDate.now();
+
+                LocalDate start = end.minusMonths(1);
+                List<GoodsDto> order = adminService.findByOrderDateRange(start,end);
+                List<GoodsDto> like =adminService.findByOrderDateRange(start,end);
                 //페이지 정보 외 페이지로 보낼 데이터
                 model.addAttribute("title", title);
+                model.addAttribute("order", order);
+                model.addAttribute("like", like);
 
                 break;
 
@@ -105,6 +115,24 @@ public class AdminController {
 //            goodsService.delete(goodsItem);
         }
         return ResponseEntity.ok(goodsItems.size() + "개가 삭제되었습니다.");
+    }
+
+    @PostMapping("/orderChart")
+    public ResponseEntity<String> orderChart(@RequestParam("startDate") LocalDate start, @RequestParam("endDate") LocalDate end) {
+//        goodsService.dashBoard
+        System.out.println(start);
+        System.out.println(end);
+        adminService.findByOrderDateRange(start,end);
+        return ResponseEntity.ok("개가 삭제되었습니다.");
+    }
+
+    @PostMapping("/likeChart")
+    public ResponseEntity<String> likeChart(@RequestParam("startDate") LocalDate start, @RequestParam("endDate") LocalDate end) {
+//        goodsService.dashBoard
+        System.out.println(start);
+        System.out.println(end);
+        adminService.findByLikeDateRange(start,end);
+        return ResponseEntity.ok("개가 삭제되었습니다.");
     }
 
 }

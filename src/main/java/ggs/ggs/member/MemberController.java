@@ -50,6 +50,7 @@ public class MemberController {
     //체크된 데이터 저장 서비스 호출
     @PostMapping("/join")
     public String join(@ModelAttribute MemberDto memberDto)throws Exception{
+        System.out.println(memberDto);
     	String encPw = passwordEncoder.encode(memberDto.getPw());
         System.out.println(memberDto);
     	memberDto.setPw(encPw);

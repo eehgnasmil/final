@@ -33,6 +33,7 @@ public class GoodsDto {
     private List<String> sizes;
     private Integer likeCnt;
     private Integer orderCnt;
+    private Integer count;
     private boolean likeTF;
 
     public GoodsDto(Goods goods){
@@ -97,5 +98,25 @@ public class GoodsDto {
         this.fileDtos = goods.getFiles().stream()
                 .map(file -> new FileDto(file))
                 .collect(Collectors.toList());
+    }
+
+    public GoodsDto(Goods goods, int count) {
+        this.idx = goods.getIdx();
+        this.category = goods.getCategory();
+        this.name = goods.getName();
+        this.summary = goods.getSummary();
+        this.detail = goods.getDetail();
+        this.sellingPrice = goods.getSellingPrice();
+        this.discountPrice = goods.getDiscountPrice();
+        this.created_date = goods.getCreated_date();
+        this.modified_date = goods.getModified_date();
+        this.count = count;
+        this.goodsOptionDtos = goods.getGoodsOptions().stream()
+                .map(option -> new GoodsOptionDto(option))
+                .collect(Collectors.toList());
+        this.fileDtos = goods.getFiles().stream()
+                .map(file -> new FileDto(file))
+                .collect(Collectors.toList());
+
     }
 }

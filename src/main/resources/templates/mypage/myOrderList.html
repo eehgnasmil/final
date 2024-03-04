@@ -43,8 +43,8 @@
                                 <span th:text="${cartItem.cnt}"/>
                             </td>
                             <td>
-                                <span class="itemPrices" th:if="${goods.sellingPrice != null and cartItem.cnt != null}"
-                                      th:text="${goods.sellingPrice * cartItem.cnt}+'원'"></span>
+                                <span class="itemPrices" th:if="${goods.discountPrice != null and cartItem.cnt != null}"
+                                      th:text="${goods.discountPrice * cartItem.cnt}+'원'"></span>
                             </td>
                         </ul>
                         <td th:rowspan="${order.cartItems.size}">

@@ -268,7 +268,6 @@ public class OrderServiceImpl implements OrderService {
         Order order = new Order(member, payment, orderItems);
 
         for (Integer product : payment.getProducts()) {
-            System.out.println(product);
 
             Optional<CartItem> optionalCartItem = cartItemRepository.findById(product);
             CartItem cartItem = optionalCartItem.get();

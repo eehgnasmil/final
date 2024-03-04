@@ -18,10 +18,9 @@
                 <table>
                     <tr><td>주문번호</td><td><span th:text="${order.orderNum}"></span></td></tr>
                     <tr><td>주문일자</td><td><span th:text="${order.created_date}"></span></td></tr>
-                    <tr><td>주문자</td><td><span th:name="*{member.idx}" th:text="*{member.name}"></span></td></tr>
-                    <tr><td>주소</td><td></td></tr>
-                    <tr><td>전화번호</td><td></td></tr>
-                    <tr><td>이메일</td><td></td></tr>
+                    <tr><td>주문자</td><td><span th:text="${order.name}"></span></td></tr>
+                    <tr><td>주소</td><td>[<span th:text="${order.postcode}"></span>]<span th:text="${order.addr}"></span></td></tr>
+                    <tr><td>전화번호</td><td><span  th:text="${order.phone}"></span></td></tr>
                 </table>
             </ul>
             <hr>
@@ -51,7 +50,7 @@
                             <span th:text="${cartItem.size}"></span>
                         </td>
                         <td><span th:text="${cartItem.cnt}"/></td>
-                        <td> <span class="itemPrices" th:text="${goods.sellingPrice*cartItem.cnt}"></span>원</td>
+                        <td> <span class="itemPrices" th:text="${goods.discountPrice*cartItem.cnt}"></span>원</td>
                         <td><li style="list-style: none;" th:if="${order.state == 3}">구매 확정<br>
                             <button type="button" th:onclick="'javascript:writeReview(' + ${cartItem.idx} + ')'">리뷰
                                 작성

@@ -20,4 +20,9 @@ public class PaymentDto {
     private Integer point;
     private Integer delivery;
 
+    private String name;
+    private String phone;
+    private String addr;
+    private String postcode;
+
 }

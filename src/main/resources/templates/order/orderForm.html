@@ -16,15 +16,21 @@
          <hr>
             <ul class="orderInfo">
             <li><span id="memberName" th:name="*{member.idx}" th:text="*{member.name}"></span></li>
-            <li><span id="memberPhone" th:text="*{member.phone}"></span></li>
+            <li><span id="memberPhone" th:text="*{member.phone}" ></span></li>
                 <li><span id="memberEmail" th:text="*{member.email}"></span></li>
                 
-                <li th:if="${order.member.postcode ne null}">
+            <li th:if="${order.member.postcode ne null}">
                <label>주소</label>
-               <span th:text="*{member.postaddress}"></span>
-               <span th:text="*{member.detailaddress}"></span>
-               <button th:if="*{member.postaddress==''}" id="modifyBtn" class="" onclick="createAddress()">주소 등록</button>
-               <button th:unless="*{member.postaddress==''}" id="modifyBtn" class="" onclick="modifyAddress()">배송지 변경</button>
+               [<span id="memberPostcode" th:text="*{member.postcode}" ></span>]
+               <span  id="memberPostaddress" th:text="*{member.postaddress}"></span>
+               <span id="memberdetailaddress" th:text="*{member.detailaddress}" ></span>
+                <button th:if="*{member.postaddress==''}" id="modifyBtn" class="" onclick="createAddress()">주소 등록</button>
+                <button th:unless="*{member.postaddress==''}" id="modifyBtn" class="" onclick="modifyAddress()">배송지 수정</button>
+            </li>
+            <li th:if="${order.member.postcode eq null}">
+                <label>주소</label>
+                <button th:if="*{member.postaddress==''}" id="modifyBtn" class="" onclick="createAddress()">주소 등록</button>
+                <button th:unless="*{member.postaddress==''}" id="modifyBtn" class="" onclick="modifyAddress()">배송지 등록</button>
             </li>
    
             <li class="postAddressM">
@@ -57,7 +63,7 @@
                            <span th:text="${cartItem.size}"></span>
                        </td>
                        <td><span th:text="${cartItem.cnt}"/></td>
-                       <td> <span class="itemPrices" th:text="${goods.sellingPrice*cartItem.cnt}"></span>원</td>
+                       <td> <span class="itemPrices" th:text="${goods.discountPrice*cartItem.cnt}"></span>원</td>
                        
                    </tr>
              </div>

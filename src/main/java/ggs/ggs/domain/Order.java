@@ -37,6 +37,10 @@ public class Order {
     private Integer delivery_price;
     private Integer usePoint;
     private Integer givePoint;
+    private String name;
+    private String phone;
+    private String addr;
+    private String postcode;
 
     @Setter
     private Integer state; // 0 취소 1 결제완료(취소) 2 배송완료(확정) 3 구매확정(리뷰) 4 구매확정
@@ -65,6 +69,10 @@ public class Order {
         this.delivery_price = payment.getDelivery();
         this.usePoint = payment.getPoint();
         this.givePoint = (int) (payment.getPrice() * 0.01);
+        this.name = payment.getName();
+        this.phone = payment.getPhone();
+        this.addr = payment.getAddr();
+        this.postcode = payment.getPostcode();
         this.state = 1;
         this.deliveryDeadline = LocalDateTime.now().plusMinutes(2);
 

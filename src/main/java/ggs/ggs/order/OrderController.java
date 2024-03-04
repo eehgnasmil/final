@@ -84,7 +84,6 @@ public class OrderController {
         authentication = SecurityContextHolder.getContext().getAuthentication();
         String sid = authentication.getName();
         Integer orderIdx = orderService.saveOrder(payment,sid);
-        System.out.println("안뇽");
     return orderIdx;
 
     }

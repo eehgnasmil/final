@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class OrderlistDto {
     private Integer idx;
     private String orderNum;
-    private MemberDto member;
+
     private List<CartItemDto> cartItems;
     private LocalDateTime created_date;
     private Integer state;
@@ -26,11 +26,14 @@ public class OrderlistDto {
     private Integer delivery_price;
     private Integer usePoint;
     private Integer givePoint;
+    private String name;
+    private String phone;
+    private String addr;
+    private String postcode;
 
     public OrderlistDto(Order order) {
         this.idx = order.getIdx();
         this.orderNum = order.getOrderNum();
-        this.member = new MemberDto(order.getMember());
         this.cartItems = order.getOrderItems().stream()
                 .map(orderItem -> new CartItemDto(orderItem))
                 .collect(Collectors.toList());
@@ -40,6 +43,11 @@ public class OrderlistDto {
         this.delivery_price = order.getDelivery_price();
         this.usePoint = this.getUsePoint();
         this.givePoint = this.getGivePoint();
+        this.name = order.getName();
+        this.phone = order.getPhone();
+        this.addr = order.getAddr();
+        this.postcode = order.getPostcode();
+
 
     }
 }

@@ -31,7 +31,7 @@
 	                        <span th:text="${cartItem.size}"></span>
 	                    </td>
 	                    <td><input type="number" th:onchange="'javascript:changCnt(' + ${cartItem.idx} + ','+this+')'" th:value="${cartItem.cnt}"/></td>
-	                    <td><span class="itemPrices" th:text="${goods.sellingPrice*cartItem.cnt}"></span>원</td>
+	                    <td><span class="itemPrices" th:text="${goods.discountPrice*cartItem.cnt}"></span>원</td>
 	                    <td><button type="button" th:onclick="'javascript:deleteCart(' + ${cartItem.idx} + ')'">X</button></td>
 	                </tr>
 				 </div>

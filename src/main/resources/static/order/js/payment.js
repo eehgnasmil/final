@@ -18,12 +18,17 @@ var milliseconds = today.getMilliseconds();
 var makeMerchantUid = `${hours}` + `${minutes}` + `${seconds}` + `${milliseconds}`;
 
 function kakaoPay(useremail, username) {
-
+    
+    
     const finalPrice = $('#finalPrice').text();
-    const phone = $('#memberphone').text();
+    const phone = $('#memberPhone').text();
     const postcode = $('#memberPostcode').text();
     const addr = $('#memberPostaddress').text() + $('#memberdetailaddress').text();
     const productName = $('#product_0').text();
+   if(postcode == ""){
+       alert("주소를 등록해주세요")
+       return
+   }
 
 
     if (confirm("구매 하시겠습니까?")) { // 구매 클릭시 한번 더 확인하기
@@ -38,7 +43,7 @@ function kakaoPay(useremail, username) {
             //구매자 정보 ↓
             buyer_email: `${useremail}`,
             buyer_name: `${username}`,
-            buyer_tel: '010-1234-5678',
+            buyer_tel: phone,
             buyer_addr: addr,
             buyer_postcode: postcode
         }, async function (rsp) { // callback
@@ -75,11 +80,15 @@ function kakaoPay(useremail, username) {
                         console.log(products)
 
                         var payment = {
+                            name: username,
                             products: products,
                             orderNum: rsp.merchant_uid,
                             price: totalAmount,
                             point: parseInt(point),
-                            delivery: delivery
+                            delivery: delivery,
+                            phone:phone,
+                            addr:addr,
+                            postcode:postcode
                         }
                         console.log(payment)
 
@@ -92,7 +101,7 @@ function kakaoPay(useremail, username) {
                                 xhr.setRequestHeader(header, token);
                             },
                             success: function (json) {
-                                alert(json)
+                                alert("구매되었습니다.")
                                 var idx = json
                                 window.location.href = "/order/orderdetail/" + idx;
                             },

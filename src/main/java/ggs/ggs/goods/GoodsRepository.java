@@ -13,6 +13,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -76,5 +78,24 @@ public interface GoodsRepository extends JpaRepository<Goods, Integer> {
             "WHERE g.idx = :idx")
     Tuple findByIdxWithBoolean(@Param("idx") Integer idx, @Param("member") Member member);
 
+    @Query("SELECT g, COUNT(o) as orderCnt " +
+            "FROM Goods g " +
+            "LEFT JOIN OrderItem o ON g = o.goods " +
+            "WHERE o.created_date BETWEEN :start AND :end " +
+            "GROUP BY g.idx " +
+            "ORDER BY orderCnt DESC " +
+            "LIMIT 10")
+    List<Object[]> findByOrderDateRange( @Param("start") LocalDateTime start,
+                               @Param("end") LocalDateTime end);
+
+    @Query("SELECT g, COUNT(l) as likeCnt " +
+            "FROM Goods g " +
+            "LEFT JOIN GoodsLike l ON g = l.goods " +
+            "WHERE l.like_date BETWEEN :start AND :end " +
+            "GROUP BY g.idx " +
+            "ORDER BY likeCnt DESC " +
+            "LIMIT 10")
+    List<Object[]> findByLikeDateRange( @Param("start") LocalDateTime start,
+                                         @Param("end") LocalDateTime end);
 
 }
