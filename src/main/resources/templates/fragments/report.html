@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="boardReport" style="display: inline-block;">
+    <ul>
+        <span type="button" th:onclick="'javascript:boardReport(' + ${board.idx} + ')'"><img src="/img/siren.png" class="siren"></span>
+    </ul>
+    <script>
+        function boardReport(idx) {
+            console.log(idx);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    "board": idx
+                },
+                url: "/report/boardReport",
+                beforeSend: function (xhr) { 
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (json) {
+                    alert(json)
+                },
+                error: function () {
+                    console.log("error");
+                },
+            });
+        }
+    </script>
+</div>
+
+<div th:fragment="replyReport" style="display: inline-block;">
+    <span type="button" th:onclick="'javascript:replyReport(' + ${lists.idx} + ')'"><img src="/img/siren.png" class="siren"></span>
+    <script>
+        function replyReport(idx) {
+            console.log(idx);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    "reply": idx
+                },
+                url: "/report/replyReport",
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader(header, token);
+                },
+                success: function (json) {
+                    alert(json)
+                },
+                error: function () {
+                    console.log("error");
+                },
+            });
+        }
+    </script>
+</div>
+
+<div th:fragment="childReplyReport" style="display: inline-block;">
+    <span type="button" th:onclick="'javascript:replyReport(' + ${childReply.idx} + ')'"><img src="/img/siren.png" class="siren"></span>
+</div>
+
+</html>

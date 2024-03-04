@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="hashtag">
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" th:href="@{/hashtag/css/hashtag.css}" type="text/css">
+    <ul>
+        <input id='tags' placeholder='# 해시태그를 입력해주세요.'>
+    </ul>
+    <script th:src="@{/hashtag/js/hashtag.js}"></script>
+</div>
+
+<div th:fragment="hashtagPage">
+    <h2>인기 해시태그</h2>
+    <li>
+        <span th:each="hashtagCount : ${topHashtags}">
+            <a th:href="@{'/board/hashtag/' + ${#strings.replace(hashtagCount.hashtag, '#', '%23')}}">
+                <span th:text="${hashtagCount.hashtag + ' (' + hashtagCount.count + ')'}"></span>
+            </a>
+        </span>
+    </li>
+</div>
+
+
+</html>
+

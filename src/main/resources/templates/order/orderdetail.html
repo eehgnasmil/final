@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout/layout}"
+>
+<head>
+    <meta charset="UTF-8">
+</head>
+<div layout:fragment="content">
+    <link rel="stylesheet" type="text/css" href="/order/css/orderdetail.css">
+    <h2 class="title">주문내역</h2>
+    <div class="container">
+        <div th:object="${order}">
+            <div style="font-size: 20px; font-weight: 600; margin:30px 0">구매자 정보</div>
+            <hr>
+            <ul class="orderInfo">
+                <table>
+                    <tr><td>주문번호</td><td><span th:text="${order.orderNum}"></span></td></tr>
+                    <tr><td>주문일자</td><td><span th:text="${order.created_date}"></span></td></tr>
+                    <tr><td>주문자</td><td><span th:name="*{member.idx}" th:text="*{member.name}"></span></td></tr>
+                    <tr><td>주소</td><td></td></tr>
+                    <tr><td>전화번호</td><td></td></tr>
+                    <tr><td>이메일</td><td></td></tr>
+                </table>
+            </ul>
+            <hr>
+            <div style="font-size: 20px; font-weight: 600; margin:30px 0; margin-top: 50px;">구매 정보</div>
+            <hr>
+            <table>
+                <tr class="tableTr">
+                    <td>이미지</td>
+                    <td>상품정보</td>
+                    <td>수량</td>
+                    <td>상품가격</td>
+                    <td>상태</td>
+                </tr>
+                <div th:each="cartItem, stat:*{cartItems}">
+                    <tr th:each="goods : ${cartItem.goodsDto}" style="border-top: none;">
+                        <td style="width: 80px;">
+                            <ul >
+                                <li>
+                                    <img th:src="@{|${goods.fileDtos[0].path}|}" alt="Goods Image" width="100%;">
+                                </li>
+                            </ul>
+                        </td>
+                        <td class="goodsInfo" style="text-align: left; padding:0 30px;">
+                            <a th:href="@{|/goods/detail/${goods.idx}|}" th:text="${goods.name}"  th:id="'product_' + ${stat.index}"></a><br><br>
+                            <input type="hidden" th:value="${cartItem.idx}" class="products" >
+                            <span th:text="${cartItem.color}"></span>&nbsp&#47
+                            <span th:text="${cartItem.size}"></span>
+                        </td>
+                        <td><span th:text="${cartItem.cnt}"/></td>
+                        <td> <span class="itemPrices" th:text="${goods.sellingPrice*cartItem.cnt}"></span>원</td>
+                        <td><li style="list-style: none;" th:if="${order.state == 3}">구매 확정<br>
+                            <button type="button" th:onclick="'javascript:writeReview(' + ${cartItem.idx} + ')'">리뷰
+                                작성
+                            </button>
+                        </li></td>
+                    </tr>
+                </div>
+                <tr>
+                    <td colspan="5" style="text-align: right;">
+                        상품가격 <span th:text="${order.price}" style="font-weight: 800;"></span><span
+                            style="font-weight: 800;">원</span>
+                        + 배송비 <span th:text="${order.delivery_price}" style="font-weight: 800;"></span><span
+                            style="font-weight: 800;">원</span>
+                        = 총 결제금액 <span th:text="${order.price} + ${order.delivery_price}"
+                                       style="font-weight: 800;"></span><span style="font-weight: 800;">원</span>
+                    </td>
+                </tr>
+
+            </table>
+
+            <a href="/mypage/myOrderList">주문목록</a>
+        </div>
+    </div>
+    <script type="text/javascript" th:src="@{/mypage/js/orderList.js}"></script>
+</div>
+</html>
