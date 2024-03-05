@@ -11,19 +11,16 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@NoArgsConstructor
 @Table(name = "member")
 public class Member {
     // 권한 나중에 더 세부적으로 나눠야 한다면 추가
     public enum Role {
         USER, ADMIN
     }
-
     // 기본을 유저로 관리자페이지에서 권한부여하여 관리자권한으로 변경가능하게
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
@@ -77,7 +74,7 @@ public class Member {
     @Column()
     private String detailaddress;
 
-    @OneToOne(mappedBy = "member", cascade = { CascadeType.ALL }, orphanRemoval = true)
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
     private MemberFile file;
 
     @OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
@@ -86,20 +83,18 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GoodsLike> goodsLikes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member", orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GoodsQnA> goodsQnAs = new ArrayList<>();
 
-    @OneToOne(mappedBy = "member", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY)
+    private List<GoodsReview> goodsReviews = new ArrayList<>();
+
+    @OneToOne(mappedBy = "member", cascade = CascadeType.ALL)
     private Cart cart;
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<ReplyReport> replyReports;
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Board> boards;
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<Reply> replys;
-    @OneToMany(mappedBy = "member", cascade = CascadeType.REMOVE)
-    private List<BoardReport> boardReports;
+    // 추가 메서드
+    public Member() {
+    }
 
     public Member(MemberDto dto) {
         this.id = dto.getId();
@@ -122,9 +117,5 @@ public class Member {
 
     public void setFile(MemberFile memberFile) {
         this.file = memberFile;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
     }
 }
