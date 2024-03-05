@@ -17,7 +17,7 @@ import java.util.*;
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-@ToString
+
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,7 +41,7 @@ public class Board {
     private LocalDateTime modifiedDate;
 
     @Column(nullable = false)
-    private String category;
+    private String category; // 필드명 수정
 
     @Column
     private String outerwear;
@@ -56,7 +56,6 @@ public class Board {
 
     private int likesCount;
     private int reportCount;
-
     @Column(columnDefinition = "boolean default false")
     private boolean isNotice;
 
@@ -99,4 +98,14 @@ public class Board {
         this.shoes = dto.getShoes();
         this.isNotice = dto.isNotice();
     }
+
+    @Override
+    public String toString() {
+        return "Board [idx=" + idx + ", title=" + title + ", detail=" + detail + ", viewcount=" + viewcount
+                + ", createdDate=" + createdDate + ", modifiedDate=" + modifiedDate + ", category=" + category
+                + ", outerwear=" + outerwear + ", top=" + top + ", bottom=" + bottom + ", shoes=" + shoes + ", acc="
+                + acc + ", likesCount=" + likesCount + ", member=" + member + ", boardlike=" + boardlike + ", replies="
+                + replies + ", middleTags=" + middleTags + "]";
+    }
+
 }

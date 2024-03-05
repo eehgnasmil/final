@@ -20,15 +20,6 @@ public class GoodsQnA {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idx;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goods", referencedColumnName = "idx")
-    private Goods goods;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member", referencedColumnName = "idx")
-    private Member member;
-
     @Column
     private Integer category; // 1 상품문의 2 주문/배송문의
     @Column
@@ -46,6 +37,14 @@ public class GoodsQnA {
     private String answer;
     @Column
     private LocalDateTime answerDate;
+
+    @ManyToOne
+    @JoinColumn(name = "goods", referencedColumnName = "idx")
+    private Goods goods;
+
+    @ManyToOne
+    @JoinColumn(name = "member", referencedColumnName = "idx")
+    private Member member;
 
     public GoodsQnA(GoodsQnADto goodsQnADto, Goods goods, Member member) {
         this.goods = goods;

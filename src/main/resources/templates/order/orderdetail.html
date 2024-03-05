@@ -51,11 +51,19 @@
                         </td>
                         <td><span th:text="${cartItem.cnt}"/></td>
                         <td> <span class="itemPrices" th:text="${goods.discountPrice*cartItem.cnt}"></span>원</td>
-                        <td><li style="list-style: none;" th:if="${order.state == 3}">구매 확정<br>
-                            <button type="button" th:onclick="'javascript:writeReview(' + ${cartItem.idx} + ')'">리뷰
-                                작성
-                            </button>
-                        </li></td>
+                        <td>
+                            <div style="list-style: none;" th:if="${order.state == 3}">구매 확정<br>
+                                <div th:if="${cartItem.state == 0}">
+                                    <a th:href="@{|/goodsCS/goodsReview/${cartItem.idx}|}">리뷰 작성하기</a>
+                                </div>
+                                <div th:if="${cartItem.state == 1}">
+                                    <a th:href="@{|/goodsCS/reviewdetail/${cartItem.idx}|}">작성한 리뷰 보러가기</a>
+                                </div>
+                                </div>
+                            <li style="list-style: none;" th:if="${order.state != 3}">
+                                <span> - </span>
+                            </li>
+                        </td>
                     </tr>
                 </div>
                 <tr>

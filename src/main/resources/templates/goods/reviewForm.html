@@ -8,54 +8,51 @@
     <meta charset="UTF-8">
 </head>
 <div layout:fragment="content">
+    <link rel="stylesheet" type="text/css" href="/goods/css/questionForm.css">
     <h1>상품등록</h1>
-    <div>
-        <div>
-            <li th:each="fileDto : ${goods.fileDtos}" th:name="${goods.idx}" >
-                <a th:href="@{|/goods/detail/${goods.idx}|}"><img th:src="@{|/img/goods/${fileDto.sfile}|}" alt="Goods Image" style="width: 100px"></a>
-            </li>
-        </div>
-        <div id="goodsName" th:text="${goods.name}"></div>
-        <table>
-            <tr>
-                <td>판매가</td>
-                <td><span th:text="${goods.sellingPrice}"></span></td>
-            </tr>
-            <tr>
-                <td>할인가</td>
-                <td><span th:text="${goods.discountPrice}"></span></td>
-            </tr>
-        </table>
-    </div>
 
     <div class="container">
-        <form th:action="@{|/goodsCS/goodsReview|}" method="post"  enctype="multipart/form-data">
+        <form th:action="@{|/goodsCS/goodsReview|}" method="post"  enctype="multipart/form-data" th:object="${review}">
+            <input type="hidden" th:field="*{idx}"/>
+            <input type="hidden" th:field="*{goodsIdx}"/>
+            <div class="prouctInfo">
 
-            <!--            <input type="hidden" th:field="*{idx}"/>-->
-            <!--            <input type="hidden" th:field="*{goodsIdx}"/>-->
-            <!--            <ul>-->
+                <div class="goodsImg" th:each="fileDto : ${goods.fileDtos}" th:name="${goods.idx}" >
+                    <a th:href="@{|/goods/detail/${goods.idx}|}"><img th:src="@{|${fileDto.path}|}" alt="Goods Image" style="width: 120px"></a>
+                </div>
+                <ul style="margin-left: 20px;">
+                    <li>상품명 :&nbsp
+                        <span style="display: inline-block;" id="goodsName" th:text="${goods.name}"></span>
+                    </li>
+                    <li>상품설명 :&nbsp
+                        <span style="display: inline-block;" id="goodsName" th:text="${goods.summary}"></span>
+                    </li>
+                    <li>판매가 :&nbsp
+                        <span th:text="${goods.sellingPrice}+'원'"></span>
+                    </li>
+                    <li>할인가 :&nbsp
+                        <span th:text="${goods.discountPrice}+'원'"></span>
+                    </li>
+                </ul>
+            </div>
+             <div>
+                <select id="star" name="star" th:field="*{star}" required>
+                    <option value="" selected>별점</option>
+                    <option value="1" th:selected="${review.star eq 1}">💛🤍🤍🤍🤍</option>
+                    <option value="2" th:selected="${review.star eq 2}">💛💛🤍🤍🤍</option>
+                    <option value="2" th:selected="${review.star eq 3}">💛💛💛🤍🤍</option>
+                    <option value="2" th:selected="${review.star eq 4}">💛💛💛💛🤍</option>
+                    <option value="2" th:selected="${review.star eq 5}">💛💛💛💛💛</option>
+                </select>
+             </div>
+            <li> 상품사진 |&nbsp
+                <div th:replace="~{fragments/file :: file}"></div>
+            </li>
+                <textarea th:field="*{content}"></textarea>
 
-            <!--                <table>-->
-            <!--                    <tr>-->
-            <!--                        <td>제목</td>-->
-            <!--                        <td><input type="text" id="title" name="title" th:field="*{title}" required/></td>-->
-            <!--                    </tr>-->
-            <!--                    <tr>-->
-            <!--                        <td colspan="2">-->
-            <!--                            <select id="category" name="category" th:field="*{category}" required>-->
-            <!--                                <option value="" selected>문의내역을 선택해주세요</option>-->
-            <!--                                <option value="1" th:selected="${question.category eq 1}">상품문의</option>-->
-            <!--                                <option value="2" th:selected="${question.category eq 2}">주문/배송문의</option>-->
-            <!--                            </select>-->
-            <!--                        </td>-->
-            <!--                    </tr>-->
-            <!--                    <tr>-->
-            <!--                        <td colspan="2"><textarea th:field="*{question}"></textarea></td>-->
-            <!--                    </tr>-->
-            <!--                </table>-->
 
 
-            <!--            </ul>-->
+
             <button type="submit">작성</button>
         </form>
     </div>
