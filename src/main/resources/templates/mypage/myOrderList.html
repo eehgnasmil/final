@@ -60,6 +60,9 @@
                                 </button>
                             </li>
                             <li style="list-style: none;" th:if="${order.state == 3}">구매 확정<br>
+                                <button type="button" th:onclick="'javascript:writeReview(' + ${order.idx} + ')'">리뷰
+                                    작성
+                                </button>
                             </li>
                             <li style="list-style: none;" th:if="${order.state == 4}">구매 확정</li>
                         </td>

@@ -58,7 +58,7 @@ public class GoodsCSServiceImpl implements GoodsCSService{
         OrderItem orderItem = orderItemRepository.findById(idx).orElseThrow();
         CartItemDto cartItemDto = new CartItemDto(orderItem);
         ReviewDto reviewDto = new ReviewDto(cartItemDto);
-        return reviewDto;
+        return null;
     }
 
 	@Override

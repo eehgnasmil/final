@@ -37,14 +37,12 @@ public class OrderItem {
     @Column
     private String size;
 
-    @Column
-    private Integer state; // 리뷰 상태 0 리뷰x 1 리뷰o
-
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "goods", referencedColumnName = "idx")
     private Goods goods;
 
-    @OneToOne(mappedBy = "orderItem" , cascade = CascadeType.REMOVE)
+    @OneToOne
+    @JoinColumn(name = "goodsReview", referencedColumnName = "idx" )
     private  GoodsReview goodsReview;
 
     @CreatedDate
@@ -61,7 +59,6 @@ public class OrderItem {
         this.size = cartItem.getGoodsOption().getSize();
         this.cnt = cartItem.getCnt();
         this.order = order;
-        this.state = 0;
 
     }
 

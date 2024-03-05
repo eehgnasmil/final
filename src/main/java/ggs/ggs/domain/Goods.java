@@ -42,7 +42,7 @@ public class Goods {
     @LastModifiedDate
     private LocalDateTime modified_date;
 
-    @OneToMany(mappedBy = "goods", cascade = {CascadeType.MERGE,CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(mappedBy = "goods", cascade = {CascadeType.MERGE}, orphanRemoval = true)
     private List<GoodsLike> goodsLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "goods", cascade = {CascadeType.ALL}, orphanRemoval = true)
@@ -51,14 +51,11 @@ public class Goods {
     @OneToMany(mappedBy = "goods", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<GoodsFile> files = new ArrayList<>();
 
-    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "goods", cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}, orphanRemoval = false)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GoodsQnA> goodsQnAs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "goods", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GoodsReview> goodsReviews = new ArrayList<>();
 
     public Goods(GoodsDto goodsDto) {
         this.idx = goodsDto.getIdx();

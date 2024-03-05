@@ -19,7 +19,6 @@ public class CartItemDto {
     private String size;
     private GoodsDto goodsDto;
     private Integer cartNum;
-    private Integer state;
 
     public CartItemDto(CartItem cartItem) {
         this.idx = cartItem.getIdx();
@@ -33,7 +32,6 @@ public class CartItemDto {
         this.cnt = orderItem.getCnt();
         this.color = orderItem.getColor();
         this.size = orderItem.getSize();
-        this.state = orderItem.getState();
         if (orderItem.getGoods() != null) {
             this.goodsDto = new GoodsDto(orderItem.getGoods());
         } else {

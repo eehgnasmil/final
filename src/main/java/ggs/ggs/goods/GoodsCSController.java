@@ -55,14 +55,8 @@ public class GoodsCSController {
     @GetMapping("/goodsReview/{idx}")
     public String goodsReviewForm(@PathVariable("idx") Integer idx, Model model, Authentication authentication){
         String sid = authentication.getName();
-        System.out.println(idx);
         ReviewDto reviewDto = goodsCSService.findbyOrderItem(idx);
-        GoodsDto goodsDto = goodsService.getGoods(reviewDto.getCartItemDto().getGoodsDto().getIdx());
-        model.addAttribute("goods",goodsDto);
-        model.addAttribute("review", reviewDto);
 
         return "/goods/reviewForm";
     }
-
-
 }

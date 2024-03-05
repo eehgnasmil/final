@@ -15,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 public class ReviewDto {
     private Integer idx;
-    private Integer goodsIdx;
     private CartItemDto cartItemDto;
     private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
     private String content;
     private Integer star; // 1~5
     private List<FileDto> fileDtos;
