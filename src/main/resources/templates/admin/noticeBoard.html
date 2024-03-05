@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="noticeBoard">
+    <ul>
+        <li>작성자 | <span th:text="${nickname}"></li>
+        <li>제목 |&nbsp <input type="text" id="title" name="title" placeholder="제목을 입력해주세요."></li>
+        <li>
+            <div th:insert="~{fragments/hashtag :: hashtag}"></div>
+        </li>
+        <li>
+            <div th:replace="~{fragments/teditor :: teditor}"></div>
+        </li>
+        <button type="button" onclick="saveOrUpdate()">등록</button>
+    </ul>
+    <!-- <script th:src="@{/admin/js/noticewrite.js}"></script> -->
+    <script th:src="@{/admin/js/nupdate.js}"></script>
+</div>
+
+</html>
