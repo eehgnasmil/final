@@ -24,11 +24,11 @@ function writesave() {
     var shoes = $('#chkShoes').is(':checked') ? $("#shoesInput").val() : null;
     var acc = $('#chkAcc').is(':checked') ? $("#accInput").val() : null;
 
-    var hashtags = window.tagify.value.map(function(tag) {
+    var hashtags = window.tagify.value.map(function (tag) {
         var trimmedValue = tag.value.replace(/\s+/g, ''); // 문자열 내의 모든 공백을 제거
         return trimmedValue.startsWith('#') ? trimmedValue : '#' + trimmedValue.toLowerCase(); // #이 없다면 앞에 추가 있으면 그냥 넘김 공백제거해줌
     });
-    
+
 
     // 콘텐츠 입력 유효성 검사
     // 마크다운으로 가져온 이유는 비교가 더 단순함
@@ -61,7 +61,7 @@ function writesave() {
         bottom: bottom,
         shoes: shoes,
         acc: acc,
-        hashtags:hashtags
+        hashtags: hashtags
     }
 
     // AJAX를 사용한 API 호출

@@ -36,6 +36,7 @@ public class BoardDto {
     private String bottom;
     private String shoes;
     private String acc;
+    private boolean isNotice;
     private int likesCount;
     private int reportCount;
 
@@ -64,6 +65,7 @@ public class BoardDto {
         this.top = board.getTop();
         this.acc = board.getAcc();
         this.shoes = board.getShoes();
+        this.isNotice = board.isNotice();
         this.likesCount = board.getLikesCount();
         this.reportCount = board.getReportCount();
         if (board.getReplies() != null) {
@@ -84,6 +86,7 @@ public class BoardDto {
                 .acc(this.acc)
                 .shoes(this.shoes)
                 .member(member)
+                .isNotice(this.isNotice)
                 .build();
     }
 

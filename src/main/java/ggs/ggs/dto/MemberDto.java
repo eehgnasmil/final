@@ -27,6 +27,7 @@ public class MemberDto {
     private Integer grade;
     private Integer point;
     private FileDto fileDto;
+    private String role;
 
     public MemberDto(String id, String password1, String name, String nick, String email) {
         this.id = id;
@@ -51,6 +52,7 @@ public class MemberDto {
         this.point = member.getPoint();
         this.intro = member.getIntro();
         this.fileDto = new FileDto(member.getFile());
+        this.role = member.getRole().name();
     }
 
 }

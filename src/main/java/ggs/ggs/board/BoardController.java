@@ -223,4 +223,21 @@ public class BoardController {
         return boardService.getBoardsByHashtag(hashtag, page, size); // 수정된 부분
     }
 
+    // 관리자
+    @PostMapping("/noticesaveorupdate")
+    @ResponseBody
+    public ResponseEntity<?> saveOrUpdate(@RequestBody BoardDto dto, Authentication authentication) {
+        String id = authentication.getName();
+
+        if (dto.getIdx() == null) { // idx 값이 없으면 게시글 저장
+            BoardDto createdBoardDto = boardService.createBoard(dto, id);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdBoardDto);
+        } else { // idx 값이 있으면 게시글 업데이트
+            boardService.updateBoard(dto.getIdx(), dto);
+            Map<String, Object> result = new HashMap<>();
+            result.put("success", true);
+            return ResponseEntity.ok(result);
+        }
+    }
+
 }

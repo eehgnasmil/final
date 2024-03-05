@@ -57,6 +57,9 @@ public class Board {
     private int likesCount;
     private int reportCount;
 
+    @Column(columnDefinition = "boolean default false")
+    private boolean isNotice;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberidx")
     private Member member;
@@ -94,5 +97,6 @@ public class Board {
         this.top = dto.getTop();
         this.acc = dto.getAcc();
         this.shoes = dto.getShoes();
+        this.isNotice = dto.isNotice();
     }
 }

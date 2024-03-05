@@ -1,7 +1,6 @@
 let page = 0;
 const size = 3;
 let urlParams = new URLSearchParams(window.location.search);
-// let hashtag = urlParams.get('hashtag');
 let hashtag = window.location.pathname.split('/').pop();
 let swiper;
 
