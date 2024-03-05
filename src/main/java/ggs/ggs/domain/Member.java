@@ -118,4 +118,8 @@ public class Member {
     public void setFile(MemberFile memberFile) {
         this.file = memberFile;
     }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
