@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">        
+<div layout:fragment="content">
+   <!-- 본인이 들어온 경우 1 / 남이 들어온 경우 2 -->
+   <link rel="stylesheet" type="text/css" href="/mypage/css/userPage.css">   
+   <div class="profileWrap">
+      <div class="">
+         <img th:src="${member.fileDto.path}" alt="프로필 사진" style="width:250px !important;"><!--클릭 시 수정 하시겠습니까? -> y ->마이리스트로 이동 -->
+      </div>
+      <div class="">
+         <ul class="profile">
+            <li>
+               <ul>
+                  <li id="id"; th:text="${member.id}" th:name="${member.id}">아이디</li>
+                  <div th:if="${member.id != sid}">
+                     <button th:if="${followCheck == false }"  th:id="followBtn"th:name="${sid}" onclick="follow()">팔로우</button>
+                     <button th:unless="${followCheck == false}"  th:id="followBtn"th:name="${sid}" onclick="unFollow()">언팔로우</button>
+                  </div>
+               </ul>
+               <ul>
+                  <li>게시물 10</li>
+                  <li>팔로워 100명</li><!--클릭 시 아래 쪽에 팔로워 리스트-->
+                  <li>팔로우 100명</li><!--클릭 시 아래 쪽에 팔로우 리스트-->
+               </ul>
+               <ul>
+                  <li th:text="${member.name}">이름</li>
+                  <input id="intro" th:value="${member.intro}">
+                  <div th:if="${member.id == sid}">                     
+                     <button th:if="${member.intro==''}" id="" class="" onclick="introCheck()">등록</button>            
+                      <button th:unless="${member.intro==''}" id="" class="" onclick="introCheck()">수정</button>            
+                  </div>
+               </ul>
+            </li>
+         </ul>
+      </div>
+   </div>
+   
+   <div class="toggleBtn">
+      <ul>
+         <li>게시물</li>
+         <li>팔로우</li>
+      </ul>   
+   </div>
+   <!--팔로워 -->   
+   <div class="follower">
+      <ul th:if="${followerList.isEmpty()}">
+         <li>팔로워가 없쪄여</li>
+      </ul>
+      <ul th:unless="${followerList.isEmpty()}">
+         <li th:each="follower : ${followerList}">
+            <ul>
+               <li th:text="${follower}"></li>
+            </ul>
+         </li>
+      </ul>
+   </div>
+
+   <!--팔로우 -->   
+   <div class="follow">
+      <ul th:if="${followList.isEmpty()}">
+         <li>팔로우한 사람이 없쪄여</li>
+      </ul>
+      <ul th:unless="${followList.isEmpty()}">
+         <li th:each="follow : ${followList}">
+            <ul>
+               <li th:text="${follow}"></li>
+            </ul>
+         </li>
+      </ul>
+   </div>
+   <!--게시글 -->
+   <style>
+
+      .swiper {
+         width: 90%;
+      }
+
+      .swiper-slide {
+         overflow: hidden;
+         height: 100%;
+         text-align: center;
+         font-size: 18px;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+      }
+
+      .swiper-slide img {
+         position: absolute;
+         top:0;
+         display: block;
+         width: 100%;
+         height: 100%;
+         object-fit: cover;
+      }
+
+      .i-hover{display:none;}
+      .mySwiper2:hover .i-hover{display:block;}
+   </style>
+   </style>
+   <div class="myBoard">
+      <ul style="display: flex; flex-wrap: wrap;">
+         <li th:each="board:${myBoards}" style="width: 25%; padding:0 0 30px 0; display:inline-block; text-align: center; ">
+            <ul >
+               <div style="position:relative; height: 0; padding-bottom:120%; overflow:hidden;" class="mySwiper2 swiper">
+                  <div class="swiper-wrapper">
+                     <li th:each="imageUrl : ${board.imageUrls}" class="swiper-slide" style="padding-bottom:130%;">
+                        <img th:src="${imageUrl}" />
+                     </li>
+                  </div>
+                  <div class="i-hover">
+                     <div class="swiper-button-next"></div>
+                     <div class="swiper-button-prev"></div>
+                     <div class="swiper-pagination"></div>
+                  </div>
+               </div>
+               <li><a th:href="@{|/board/board_detail/${board.idx}|}" th:text="${board.idx}"></a></li>
+               <li><span th:text="${board.title}"></span></li>
+               <li><span th:text="${board.category}"></span></li>
+               <li><span th:text="${board.nickname}"></span></li>
+               <li><span th:text="${board.viewcount}"></span></li>
+               <li><span th:text="${#temporals.format(board.modifiedDate, 'yyyy-MM-dd HH:mm:ss')}"></span></li>
+            </ul>
+         </li>
+      </ul>
+   </div>
+    <script type="text/javascript" th:src="@{/member/js/userPage.js}"></script>       
+</div>
+</html>

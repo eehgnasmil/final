@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="review">
+    <div style="padding:20px 0; font-size: 30px; font-weight: 600; border-bottom:2px solid black;">Review</div>
+    <div th:each="review:${review}" >
+        <style>
+            .reV{}
+            .reV ul{}
+            .reV ul li{ padding:5px 0;}
+        </style>
+        <div class="reV">
+            <div style="display: inline-block;" th:each="file:${review.fileDtos}">
+                <img th:src="${file.path}" style="width: 100px; padding:13px;">
+            </div>
+            <ul style="display: inline-block; vertical-align:top; padding:13px;">
+                <li>
+                    <span style="display: inline-block;" id="" th:text="${review.memberId}"></span>
+                    <span style="display: inline-block;" th:text="${#temporals.format(review.createDate, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                </li>
+                <li>
+                </li>
+                <li>옵션 :&nbsp
+                    <span th:text="${review.cartItemDto.color} +' / '"></span><span th:text="${review.cartItemDto.size}"></span>
+                </li>
+                <li>
+                    <sapn th:if="${review.star == 1}">💛🤍🤍🤍🤍</sapn>
+                    <sapn th:if="${review.star == 2}">💛💛🤍🤍🤍</sapn>
+                    <sapn th:if="${review.star == 3}">💛💛💛🤍🤍</sapn>
+                    <sapn th:if="${review.star == 4}">💛💛💛💛🤍</sapn>
+                    <sapn th:if="${review.star == 5}">💛💛💛💛💛</sapn>
+                </li>
+                <li><span th:text="${review.content}" disabled></span></li>
+            </ul>
+        </div>
+        <ul>
+
+        </ul>
+    </div>
+</div>
+</html>

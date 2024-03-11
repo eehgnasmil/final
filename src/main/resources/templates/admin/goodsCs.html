@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="goodsCs" style="margin-bottom: 200px;">
+    <div th:fragment="goodsCsList">
+        <style>
+            tr{padding:15px; height: 20px; border:1px solid #c3c3c3;}
+            td{padding:15px; text-align: center;}
+            .agl{text-align: center;}
+            .gsAnswer{display: none;}
+            .gsAnswer textarea{width: 100%; background:none; border: none;}
+            .nav ul{}
+            .nav ul li{display: inline-block; margin-right: 20px; font-size: 20px;}
+        </style>
+        <h2 class="title">상품 문의</h2>
+        <div class="nav" style="position: relative; display:inline-block; width: 97%; margin:30px auto;">
+            <ul class="" sec:authorize="hasRole('ROLE_ADMIN')">
+                <li><a th:href="@{/admin/goodsCs(category=${0})}">All</a></li>
+                <li><a th:href="@{/admin/goodsCs(category=${1})}">상품문의</a></li>
+                <li><a th:href="@{/admin/goodsCs(category=${2})}">주문/배송문의</a></li>
+            </ul>
+            <ul class="" sec:authorize="hasRole('ROLE_USER')">
+                <li><a th:href="@{/mypage/myGoodsQnAList(category=${0})}">All</a></li>
+                <li><a th:href="@{/mypage/myGoodsQnAList(category=${1})}">상품문의</a></li>
+                <li><a th:href="@{/mypage/myGoodsQnAList(category=${2})}">주문/배송문의</a></li>
+            </ul>
+            <ul style="position:absolute; bottom:0; right: 0;" sec:authorize="hasRole('ROLE_ADMIN')">
+                <select th:onchange="|location='/admin/goodsCs?category=' + ${category} + '&sortValue=' + this.value;|">
+                    <option value="0" th:selected="${sortValue == 0}">전체</option>
+                    <option value="1" th:selected="${sortValue == 1}">미완료</option>
+                    <option value="2" th:selected="${sortValue == 2}">답변 완료</option>
+                </select>
+            </ul>
+            <ul style="position:absolute; bottom:0; right: 0;" sec:authorize="hasRole('ROLE_USER')">
+                <select th:onchange="|location='/mypage/myGoodsQnAList?category=' + ${category} + '&sortValue=' + this.value;|">
+                    <option value="0" th:selected="${sortValue == 0}">전체</option>
+                    <option value="1" th:selected="${sortValue == 1}">미완료</option>
+                    <option value="2" th:selected="${sortValue == 2}">답변 완료</option>
+                </select>
+            </ul>
+        </div>
+        <div>
+            <table style="width: 100%; border-bottom: 1px solid black;">
+                <tr class="agl">
+                    <td>NO</td>
+                    <td>상품번호</td>
+                    <td>제목</td>
+                    <td>작성자</td>
+                    <td>등록일</td>
+                    <td>상태</td>
+                </tr>
+                <div th:each="goodsQnA,stat:${goodsQnAs}">
+                    <tr >
+                        <td><span th:text="${stat.index+1}"></span></td>
+                        <td><a th:href="@{|/goods/detail/${goodsQnA.GoodsDto.idx}|}">
+                            <span>goods_</span><span th:text="${goodsQnA.GoodsDto.idx}"></span>
+                        </a></td>
+                        <td>
+                            <span style="cursor: pointer;" th:text="${goodsQnA.title}" th:name="${goodsQnA.idx}" onclick="answerTogle(this)"></span>
+                        </td>
+                        <td><span th:text="${goodsQnA.memberId}"></span></td>
+                        <td><span th:text="${goodsQnA.questionDate}"></span></td>
+                        <td>
+                            <span th:if="${goodsQnA.state == 1}">답변대기</span>
+                            <span th:if="${goodsQnA.state == 2}">답변완료</span>
+                        </td>
+                    </tr>
+                    <tr th:if="${goodsQnA.state == 1}" th:id="'gsAnswer'+${goodsQnA.idx}" sec:authorize="hasRole('ROLE_USER')" class="gsAnswer">
+                        <td colspan="6">
+                            <div style="text-align: left; padding:10px 0;">[ 문의 ]</div>
+                            <textarea th:text="${goodsQnA.question}" disabled></textarea>
+                        </td>
+                    </tr>
+                    <tr th:if="${goodsQnA.state == 1}" th:id="'gsAnswer'+${goodsQnA.idx}" sec:authorize="hasRole('ROLE_ADMIN')" class="gsAnswer">
+                        <td colspan="6">
+                            <div style="text-align: left; padding:10px 0;">[ 문의 ]</div>
+                            <textarea style="border-bottom: 1px solid #c3c3c3;" th:text="${goodsQnA.question}" disabled></textarea>
+                            <div style="text-align: left; padding:10px 0;">[ 답변 ]
+                            </div>
+                            <textarea th:id="'answer_'+${goodsQnA.idx}"  th:text="${goodsQnA.answer}" placeholder="답변을 작성해주세요."></textarea>
+                            <button type="button" sec:authorize="hasRole('ROLE_ADMIN')" th:onclick="'saveAnswer(' + ${goodsQnA.idx} + ')'" >등록</button>
+                        </td>
+                    </tr>
+                    <tr th:if="${goodsQnA.state == 2}" th:id="'gsAnswer'+${goodsQnA.idx}" class="gsAnswer">
+                        <td colspan="6" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <div style="text-align: left; padding:10px 0;">[ 문의 ]</div>
+                            <textarea style="border-bottom: 1px solid #c3c3c3;" th:text="${goodsQnA.question}" disabled></textarea>
+                            <div style="text-align: left; padding:10px 0;">[ 답변 ]
+                                <button sec:authorize="hasRole('ROLE_ADMIN')" type="button"  th:onclick="'saveAnswer(' + ${goodsQnA.idx} + ')'" >수정</button>
+                            </div>
+                            <textarea th:id="'answer_'+${goodsQnA.idx}" th:text="${goodsQnA.answer}"></textarea>
+                        </td>
+                        <td colspan="6" sec:authorize="hasRole('ROLE_USER')">
+                            <div style="text-align: left; padding:10px 0;">[ 문의 ]</div>
+                            <textarea style="border-bottom: 1px solid #c3c3c3;" th:text="${goodsQnA.question}" disabled></textarea>
+                            <div style="text-align: left; padding:10px 0;">[ 답변 ]</div>
+                            <textarea th:id="'answer_'+${goodsQnA.idx}" th:text="${goodsQnA.answer}" disabled></textarea>
+                        </td>
+                    </tr>
+                </div>
+            </table>
+            <script>
+                function answerTogle(element){
+                    var idx = $(element).attr('name');
+                    $('#gsAnswer'+idx).toggle();
+                }
+
+            </script>
+        </div>
+        <script>
+            function saveAnswer(idx){
+                var answer = document.getElementById('answer_'+idx).value
+                console.log(answer)
+                $.ajax({
+                    type: 'POST',
+                    data: {
+                        idx:idx,
+                        answer:answer
+                    },
+                    url: "/goodsCS/goodsAnswer",
+                    beforeSend: function (xhr) {
+                        xhr.setRequestHeader(header, token);
+                    },
+                    success: function (json) {
+                        alert(json)
+                        location.reload();
+
+                    },
+                    error: function () {
+                        console.log("error");
+                    },
+                });
+            }
+        </script>
+    </div>
+    <!--    페이징-->
+    <div th:if="${!goodsQnAs.isEmpty()}">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${!goodsQnAs.hasPrevious()} ? 'disabled'">
+                <a class="page-link"
+                   th:if="${goodsQnAs.hasPrevious()}"
+                   th:href="@{|?category=${category}&sortValue=${sortValue}&page=${goodsQnAs.number-1}|}">
+                    <span><</span>
+                </a>
+            </li>
+            <li th:each="page: ${#numbers.sequence(0, goodsQnAs.totalPages-1)}"
+                th:if="${page >= goodsQnAs.number-5 and page <= goodsQnAs.number+5}"
+                th:classappend="${page == goodsQnAs.number} ? 'active'"
+                class="page-item">
+                <a th:text="${page+1}" class="page-link" th:href="@{|?category=${category}&sortValue=${sortValue}&page=${page}|}"></a>
+            </li>
+            <li class="page-item" th:classappend="${!goodsQnAs.hasNext()} ? 'disabled'">
+                <a class="page-link"
+                   th:if="${goodsQnAs.hasNext()}"
+                   th:href="@{|?category=${category}&sortValue=${sortValue}&page=${goodsQnAs.number+1}|}">
+                    <span>></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</html>

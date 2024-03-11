@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
+
+<head>
+    <meta charset="UTF-8">
+</head>
+<div layout:fragment="content" `>
+    <link rel="stylesheet" type="text/css" href="/goods/css/questionForm.css">
+
+    <div style="width: 1300px !important; margin: 0 auto!important;">
+        <div class="container">
+            <h2 class="title">리뷰작성</h2>
+            <form th:action="@{|/goodsCS/goodsReview|}" method="post" enctype="multipart/form-data"
+                th:object="${review}">
+                <input type="hidden" th:field="*{idx}" />
+                <input type="hidden" th:field="*{goodsIdx}" />
+                <input type="hidden" th:field="*{orderItemIdx}" />
+                <div class="prouctInfo">
+
+                    <div class="goodsImg" th:name="${goods.idx}">
+                        <a th:href="@{|/goods/detail/${goods.idx}|}"><img th:src="@{|${goods.fileDtos[0].path}|}"
+                                alt="Goods Image" style="width: 200px; padding:13px;"></a>
+                    </div>
+                    <ul style="margin-left: 20px;">
+                        <li>상품명 :&nbsp
+                            <span style="display: inline-block;" id="goodsName" th:text="${goods.name}"></span>
+                        </li>
+                        <li>상품설명 :&nbsp
+                            <span style="display: inline-block;" id="goodsName" th:text="${goods.summary}"></span>
+                        </li>
+                        <li>판매가 :&nbsp
+                            <span th:text="${goods.sellingPrice}+'원'"></span>
+                        </li>
+                        <li>할인가 :&nbsp
+                            <span th:text="${goods.discountPrice}+'원'"></span>
+                        </li>
+                        <li>옵션 :&nbsp
+                            <span th:text="${review.cartItemDto.color} +' / '"></span><span
+                                th:text="${review.cartItemDto.size}"></span>
+                        </li>
+                        <li>
+                            <select id="star" name="star" th:field="*{star}" required>
+                                <option value="" selected>별점</option>
+                                <option value="1" th:selected="${review.star eq 1}">💛🤍🤍🤍🤍</option>
+                                <option value="2" th:selected="${review.star eq 2}">💛💛🤍🤍🤍</option>
+                                <option value="3" th:selected="${review.star eq 3}">💛💛💛🤍🤍</option>
+                                <option value="4" th:selected="${review.star eq 4}">💛💛💛💛🤍</option>
+                                <option value="5" th:selected="${review.star eq 5}">💛💛💛💛💛</option>
+                            </select>
+                        </li>
+                    </ul>
+                </div>
+                <ul class="question">
+                    <li> 상품사진 |&nbsp
+                        <div th:replace="~{fragments/file :: file}"></div>
+                    </li>
+                    <textarea th:field="*{content}"></textarea>
+                </ul>
+
+                <button type="submit"
+                    style="border:none; padding:10px 20px; margin-top:50px; background:black; color:white; border-radius:10px; ">작성</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</html>

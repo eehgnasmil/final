@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="myGoodsQnAList">
+    <div class="myModify_wrap">
+        <div th:replace="~{/admin/goodsCs :: goodsCsList}"></div>
+        <!--    페이징-->
+        <div th:if="${!goodsQnAs.isEmpty()}">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${!goodsQnAs.hasPrevious()} ? 'disabled'">
+                    <a class="page-link"
+                       th:if="${goodsQnAs.hasPrevious()}"
+                       th:href="@{|?category=${category}&sortValue=${sortValue}&page=${goodsQnAs.number-1}|}">
+                        <span><</span>
+                    </a>
+                </li>
+                <li th:each="page: ${#numbers.sequence(0, goodsQnAs.totalPages-1)}"
+                    th:if="${page >= goodsQnAs.number-5 and page <= goodsQnAs.number+5}"
+                    th:classappend="${page == goodsQnAs.number} ? 'active'"
+                    class="page-item">
+                    <a th:text="${page+1}" class="page-link" th:href="@{|?category=${category}&sortValue=${sortValue}&page=${page}|}"></a>
+                </li>
+                <li class="page-item" th:classappend="${!goodsQnAs.hasNext()} ? 'disabled'">
+                    <a class="page-link"
+                       th:if="${goodsQnAs.hasNext()}"
+                       th:href="@{|?category=${category}&sortValue=${sortValue}&page=${goodsQnAs.number+1}|}">
+                        <span>></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</html>
